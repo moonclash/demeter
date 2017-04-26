@@ -1,5 +1,6 @@
 import React from 'react';
 import FoodItem from './FoodItem';
+import UserProfile from './UserProfile';
 
 class App extends React.Component {
   constructor() {
@@ -7,24 +8,29 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       searchResults: [],
+      userFoods: [],
+      totalCalories: 0,
+      totalProtein: 0,
+      totalCarbs: 0,
+      totalFat: 0
     }
   }
 
   componentDidMount() {
-    fetch(`https://api.nutritionix.com/v1_1/search/${'bacon'}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_protein%2Cnf_total_fat%2Cnf_total_carbohydrate&appId=073caca0&appKey=b957d4a34fda847d4a77bcb860c5bcac`)
-    .then(blob => blob.json().then(data => {
-      const [...hits] = data.hits;
-      this.setState({searchResults: hits});
-    }));
+    // fetch(`https://api.nutritionix.com/v1_1/search/${'bacon'}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_protein%2Cnf_total_fat%2Cnf_total_carbohydrate&appId=073caca0&appKey=b957d4a34fda847d4a77bcb860c5bcac`)
+    // .then(blob => blob.json().then(data => {
+    //   const [...hits] = data.hits;
+    //   this.setState({searchResults: hits});
+    // }));
   }
 
   handleChange() {
-    const foodQuery = this.foodSearch.value.replace(/\s/gi,'%20');
-    fetch(`https://api.nutritionix.com/v1_1/search/${foodQuery}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_protein%2Cnf_total_fat%2Cnf_total_carbohydrate&appId=073caca0&appKey=b957d4a34fda847d4a77bcb860c5bcac`)
-    .then(blob => blob.json().then(data => {
-      const [...hits] = data.hits;
-      this.setState({searchResults: hits});
-    })); 
+    // const foodQuery = this.foodSearch.value.replace(/\s/gi,'%20');
+    // fetch(`https://api.nutritionix.com/v1_1/search/${foodQuery}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_protein%2Cnf_total_fat%2Cnf_total_carbohydrate&appId=073caca0&appKey=b957d4a34fda847d4a77bcb860c5bcac`)
+    // .then(blob => blob.json().then(data => {
+    //   const [...hits] = data.hits;
+    //   this.setState({searchResults: hits});
+    // })); 
   }
 
   render() {

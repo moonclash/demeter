@@ -1,49 +1,88 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
-
 $protein-green: #61E881;
 $carbs-blue: #61BFE8;
 $fat-red: #E95555;
+$white-500: #FFFFFF;
 $black-main: #000000;
 $grey-300: #95989A;
+$grey-400: darken($grey-300, 20%);
 
-
+%flex-col {
+  display: flex;
+  flex-flow: column wrap;
+}
 * {
   font-family: 'Open Sans';
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background: linear-gradient(45deg, $protein-green, $carbs-blue, $fat-red) no-repeat center center / cover;
 }
 
 
 .search-results {
   max-width: 500px;
+  background: $white-500;
+  padding: 8px 15px;
+  max-height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  
+
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }
+
+.search-results::webkit-scrollbar {
+    display: none;
+  }
+
 
 .food-item {
   margin: 10px;
-  outline: 1px solid $grey-300;
-  box-shadow: 0 3px 6px transparentize($black-main, .6);
+  box-shadow: 0 0 0 1px transparentize($black-main, .8),  0 6px 8px transparentize($black-main, .7);
   height: 12vh;
+  padding: 0 5px;
+  border-radius: 6px;
+  @extend %flex-col;
+  justify-content: center;
+  h4 {
+    margin: 0;
+    padding: 8px 0;
+    color: $grey-400;
+  }
+
+  p {
+    margin: 0;
+    padding: 5px 0;
+  }
+  .macro-square:before {
+    content: "";
+    display: inline-block;
+    margin: 0 5px;
+    width: 18px;
+    height: 18px;
+  }
+  .protein:before {
+    background: $protein-green;
+  }
+  .carbs:before {
+    background: $carbs-blue;
+  }
+  .fat:before {
+    background: $fat-red;
+  }
 }
 
-.macro-square {
-}
-
-
-.macro-square:before {
-  content: "";
-  display: inline-block;
-  margin: 0 5px;
-  width: 18px;
-  height: 18px;
-}
-
-.protein:before {
-  background: $protein-green;
-}
-
-.carbs:before {
-  background: $carbs-blue;
-}
-
-.fat:before {
-  background: $fat-red;
-}
 
