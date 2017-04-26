@@ -9,5 +9,8 @@ export default function FoodItem(props) {
               <span className="macro-square carbs">{props.carbs}g</span>
               <span className="macro-square fat">{props.fat}g</span>
             </div>
+            <div className="actions">
+              
+            </div>
           </div>);
 }
