@@ -11,6 +11,32 @@ $grey-400: darken($grey-300, 20%);
   display: flex;
   flex-flow: column wrap;
 }
+.app-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.user-wrap {
+  max-width: 500px;
+  margin: 0 10px;
+  background: $white-500;
+  .user-pic {
+    color: #fff;
+    box-shadow: 0 5px 15px transparentize($grey-400, .2);
+    background: {
+      repeat: no-repeat;
+      position: center center;
+      size: cover !important;
+      blend-mode: overlay,darken;
+    }
+    text-align: center;
+    padding: 100px 0;
+  }
+  h1 {
+    margin: 0;
+  }
+  flex: 1;
+}
 * {
   font-family: 'Open Sans';
 }
@@ -33,6 +59,7 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
+  flex: 1;
   
 
 
