@@ -10,6 +10,7 @@ class App extends React.Component {
     this.nameChange = this.nameChange.bind(this);
     this.calorieChange = this.calorieChange.bind(this);
     this.imageChange=this.imageChange.bind(this);
+    this.handleFoodItem = this.handleFoodItem.bind(this);
     this.state = {
       searchResults: [],
       userFoods: [],
@@ -56,6 +57,13 @@ class App extends React.Component {
     this.setState({ userPicture });
   }
 
+  handleFoodItem(id) {
+    const { userFoods, searchResults } = this.state;
+    let [a] = searchResults.filter(result => result.item_id === id);
+    userFoods.push(a);
+    this.setState({userFoods});
+  }
+
   render() {
     return (
           <div className='app-wrap'>
@@ -76,11 +84,35 @@ class App extends React.Component {
               fat={fat}
               protein={protein}
               carbs={carbs}
-              key={id}/>
+              id={id}
+              key={id}
+              onClick={this.handleFoodItem}/>
             })}
           </div>
           <div className="user-wrap">
-            <UserProfile img={this.state.userPicture} userName={this.state.userName} />
+            <UserProfile img={this.state.userPicture} userName={this.state.userName}>
+              {this.state.userFoods.map(item => {
+                console.log(item);
+                const {
+                 item_id: id,
+                 item_name: name,
+                 nf_calories: calories, 
+                 nf_total_fat: fat, 
+                 nf_total_carbohydrate: carbs,
+                 nf_protein: protein 
+                } = item;
+              return <FoodItem 
+              name={name}
+              calories={calories} 
+              fat={fat}
+              protein={protein}
+              carbs={carbs}
+              id={id}
+              key={id}
+              onClick={this.handleFoodItem}/>
+
+              })}
+            </UserProfile>
           </div>
           <SettingsPanel
           nameChange={this.nameChange}

@@ -82,6 +82,7 @@ body {
   height: 12vh;
   padding: 0 5px;
   border-radius: 6px;
+  position: relative;
   @extend %flex-col;
   justify-content: center;
   h4 {
@@ -110,6 +111,61 @@ body {
   .fat:before {
     background: $fat-red;
   }
+
+  .add-remove {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 3px;
+    cursor: pointer;
+  }
 }
+
+.settings-panel {
+  background: $white-500;
+  flex: 0 1 25%;
+  padding: 10px 9px;
+  @extend %flex-col;
+  h3 {
+    text-align: center;
+  }
+  label {
+    font-size: .8em;
+    padding: 2px 0;
+    font-weight: 600;
+    color: $grey-300;
+  }
+  input {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  span {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
+.food-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+
+  &.food-enter-active {
+     transition: 200ms all;
+     opacity: 1;
+     transform: translateX(0);
+  }
+}
+
+.food-leave {
+  opacity: 1;
+  transform: translateX(0);
+
+  &.food-leave-active {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
 
 

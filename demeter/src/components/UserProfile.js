@@ -1,4 +1,6 @@
 import React from 'react';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+
 
 export default function UserProfile(props) {
   return(<div className='user-profile'>
@@ -8,5 +10,13 @@ export default function UserProfile(props) {
             <span className="user-calories">
                 {props.userCalories}
             </span>
+            <CSSTransitionGroup
+              transitionName='food'
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
+              >
+              {props.children}
+            </CSSTransitionGroup>
+           
         </div>);
 }
