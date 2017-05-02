@@ -167,5 +167,47 @@ body {
   }
 }
 
+.user-calories {
+  display: block;
+  margin: 10px 0;
+  &:before {
+    display: block;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: .8em;
+  }
+}
+
+.calories_goal:before {
+  content: "goal calories";
+}
+
+.calories_total:before {
+  content: "total calories";
+}
+
+.user-macros {
+  .macro-square {
+    &:after {
+      @extend .user-calories:before;
+      
+    }
+
+  }
+  .protein:after {
+    content: "protein";
+  }
+
+  .carbs:after {
+    content: "carbs"
+  }
+
+  .fat:after {
+    content: "fat"
+  }
+}
+
+
+
 
 
