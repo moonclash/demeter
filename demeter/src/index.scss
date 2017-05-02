@@ -145,7 +145,6 @@ body {
   }
 }
 
-
 .food-enter {
   opacity: 0;
   transform: translateX(-100%);
@@ -166,6 +165,13 @@ body {
     transform: translateX(100%);
   }
 }
+
+.user-profile {
+  max-height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 
 .user-calories {
   display: block;
