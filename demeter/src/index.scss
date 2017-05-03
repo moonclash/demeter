@@ -161,6 +161,7 @@ body {
   transform: translateX(0);
 
   &.food-leave-active {
+    transition: 400ms all ease;
     opacity: 0;
     transform: translateX(100%);
   }

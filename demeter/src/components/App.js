@@ -15,8 +15,8 @@ class App extends React.Component {
     this.foodItemsUpdate = this.foodItemsUpdate.bind(this);
     this.setCalories = this.setCalories.bind(this);
     this.state = {
-      searchResults: [],
-      userFoods: [],
+      searchResults: {},
+      userFoods: {},
       userPicture: 'http://fillmurray.com/500/500',
       userName: 'Your name here',
       userCalories: 0,
@@ -31,34 +31,60 @@ class App extends React.Component {
     const query = queryManager(item);
     fetch(query)
     .then(blob => blob.json().then(data => {
+      const searchResult = {};
       let [...hits] = data.hits;
-      hits = hits.map(hit => hit.fields);
-      this.setState({searchResults: hits});
+      hits.forEach(hit => {
+        searchResult[hit._id] = hit.fields
+      });
+      this.setState({searchResults: searchResult});
     }));
   }
 
   componentDidMount() {
     this.foodItemsUpdate();
+    const localState = JSON.parse(localStorage.getItem('user-data'));
+    const { userFoods,
+      userPicture,
+      userName,
+      userCalories,
+      totalCalories,
+      totalProtein,
+      totalCarbs,
+      totalFat } = localState;
+    this.setState({
+      userFoods,
+      userPicture,
+      userName,
+      userCalories,
+      totalCalories,
+      totalProtein,
+      totalCarbs,
+      totalFat
+    });
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('user-data',JSON.stringify(this.state));
   }
 
   updateUserMacros() {
     const { userFoods } = this.state;
-    if (userFoods.length) {
-      const macrosTaken = userFoods.reduce((prev,next) => {
-      return {
-        nf_calories: prev.nf_calories + next.nf_calories,
-        nf_protein: prev.nf_protein + next.nf_protein,
-        nf_total_carbohydrate: prev.nf_total_carbohydrate + next.nf_total_carbohydrate,
-        nf_total_fat: prev.nf_total_fat + next.nf_total_fat
-      }
-    });
-    this.setState({
-      totalCalories: macrosTaken.nf_calories,
-      totalProtein: macrosTaken.nf_protein,
-      totalCarbs: macrosTaken.nf_total_carbohydrate,
-      totalFat: macrosTaken.nf_total_fat
-    }) 
+    const macros = {
+      totalCalories: 0,
+      totalProtein: 0,
+      totalCarbs: 0,
+      totalFat: 0
+    };
+    for (let prop in userFoods) {
+      macros.totalCalories += userFoods[prop].nf_calories || 0;
+      macros.totalProtein += userFoods[prop].nf_protein || 0;
+      macros.totalCarbs += userFoods[prop].nf_total_carbohydrate || 0;
+      macros.totalFat += userFoods[prop].nf_total_fat || 0;
     }
+    this.setState({totalCalories : macros.totalCalories,
+                   totalProtein: macros.totalProtein,
+                   totalCarbs: macros.totalCarbs,
+                   totalFat: macros.totalFat})
   }
 
   handleChange() {
@@ -73,7 +99,7 @@ class App extends React.Component {
 
   calorieChange(e) {
     const userCalories = e.target.value;
-    this.setState({userCalories});
+    this.setState({ userCalories });
   }
 
   imageChange(e) {
@@ -82,11 +108,14 @@ class App extends React.Component {
   }
 
   handleFoodItem(id) {
-    const { userFoods, searchResults } = this.state;
-    let [a] = searchResults.filter(result => result.item_id === id);
-    userFoods.push(a);
-    this.updateUserMacros();
-    this.setState({userFoods});
+    let {searchResults,userFoods} = this.state;
+    if(userFoods[id]) {
+      delete userFoods[id];
+    }else {
+      userFoods[id] = searchResults[id];
+    }
+      this.updateUserMacros();
+      this.setState({ userFoods });
   }
 
   setCalories(e) {
@@ -101,30 +130,33 @@ class App extends React.Component {
       totalCalories,
       totalProtein,
       totalCarbs,
-      totalFat} = this.state
+      totalFat,
+      searchResults,
+      userFoods} = this.state;
     return (
           <div className='app-wrap'>
             <div className='search-results'>
             <input onChange={this.handleChange} type="text" ref={(input) => this.foodSearch = input}/>
-            {this.state.searchResults.map((result) => {
-              const {
-                 item_id: id,
+            {
+              Object.keys(searchResults).map(key => {
+                const {
                  item_name: name,
                  nf_calories: calories, 
                  nf_total_fat: fat, 
                  nf_total_carbohydrate: carbs,
                  nf_protein: protein 
-              } = result;
+              } = searchResults[key];
               return <FoodItem 
               name={name}
               calories={calories} 
               fat={fat}
               protein={protein}
               carbs={carbs}
-              id={id}
-              key={id}
+              id={key}
+              key={key}
               onClick={this.handleFoodItem}/>
-            })}
+              })
+            }
           </div>
           <div className="user-wrap">
             <UserProfile 
@@ -135,29 +167,29 @@ class App extends React.Component {
             protein={totalProtein}
             carbs={totalCarbs}
             fat={totalFat}
-
             >
-              {this.state.userFoods.map((item)=> {
+            {
+              Object.keys(userFoods).map(key => {
                 const {
-                 item_id: id,
                  item_name: name,
                  nf_calories: calories, 
                  nf_total_fat: fat, 
                  nf_total_carbohydrate: carbs,
                  nf_protein: protein 
-                } = item;
+              } = userFoods[key];
               return <FoodItem 
               name={name}
               calories={calories} 
               fat={fat}
               protein={protein}
               carbs={carbs}
-              id={id}
-              key={id}
-              onClick={this.handleFoodItem}
-              calorieChange={this.update}/>
-              })}
+              id={key}
+              key={key}
+              onClick={this.handleFoodItem}/>
+              })
+            }
             </UserProfile>
+            
           </div>
           <SettingsPanel
           nameChange={this.nameChange}
