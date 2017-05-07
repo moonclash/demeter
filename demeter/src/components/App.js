@@ -136,7 +136,7 @@ class App extends React.Component {
     return (
           <div className='app-wrap'>
             <div className='search-results'>
-            <input onChange={this.handleChange} type="text" ref={(input) => this.foodSearch = input}/>
+            <input placeholder="🍣" onChange={this.handleChange} type="text" ref={(input) => this.foodSearch = input}/>
             {
               Object.keys(searchResults).map(key => {
                 const {
